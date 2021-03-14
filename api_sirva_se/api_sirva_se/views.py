@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from venda.serializers import UserSerializer, GroupSerializer
+from api_sirva_se.serializers import UserSerializer, GroupSerializer
 from django.contrib import admin
 admin.autodiscover()
 

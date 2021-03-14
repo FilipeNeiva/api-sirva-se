@@ -19,9 +19,9 @@ from api_sirva_se import views
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'users/', views.UserList)
-router.register(r'users/<pk>/', views.UserDetails)
-router.register(r'groups/', views.GroupList)
+router.register(r'users', views.UserList)
+router.register(r'users/<pk>', views.UserDetails)
+router.register(r'groups', views.GroupList)
 
 
 urlpatterns = [

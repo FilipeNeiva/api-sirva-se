@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from api_sirva_se.models import Produto
+from venda.models import Produto
 
 # Create your models here.
 
