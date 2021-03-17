@@ -17,10 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 from api_sirva_se import views
 from rest_framework import routers
+from despesa import urls as despesas
+from fiado import urls as fiados
+from venda import urls as vendas
 
 router = routers.DefaultRouter()
-router.register(r'users', views.UserList)
-router.register(r'users/<pk>', views.UserDetails)
 router.register(r'user', views.GetUser, basename='usuario')
 
 
@@ -28,5 +29,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls'))
+    path('api-auth/', include('rest_framework.urls')),
+    path('venda/', include(vendas.router.urls)),
+    path('fiado/', include(fiados.router.urls)),
+    path('despesa/', include(despesas.router.urls))
 ]

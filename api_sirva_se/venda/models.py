@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Produto(models.Model):
+    mercearia = models.ForeignKey(User, on_delete=models.PROTECT, related_name='produtos_mercearia')
     nome = models.CharField(max_length=30)
     quantidade_em_estoque = models.IntegerField()
     valor_unidade = models.FloatField()
