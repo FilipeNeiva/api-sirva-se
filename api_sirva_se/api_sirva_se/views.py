@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User, Group
 from django.contrib import admin
+from django.http import HttpResponseForbidden
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
 
 from rest_framework import viewsets, permissions, generics
@@ -13,33 +14,6 @@ admin.autodiscover()
 
 
 # Create your views here.
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-    @action(detail=True, method=['post'], permission_classes=[permissions.AllowAny])
-    def register(self, request):
-        serializer = UserRegistrationSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        model_serializer = UserSerializer(data=serializer.data)
-        model_serializer.is_valid(raise_exception=True)
-        model_serializer.save()
-        return Response(model_serializer.data)
-    @action(detail=True, methods=['get'])
-    def info(self, request):
-        serializer = UserSerializer(request.user)
-        return Response(serializer.data)
-    def list(self, request):
-        user = request.user
-        if not user or not user.is_superuser:
-            return HttpResponseForbidden()
-        return super(UserViewSet, self).list(request)
-    def update(self, request, pk=None):
-        user = User.objects.filter(id=pk).first()
-        if not user or request.user != user:
-            return HttpResponseForbidden()
-        return super(UserViewSet, self).update(request)
-
 
 class UserRegister(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny]
