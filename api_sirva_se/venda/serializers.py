@@ -3,18 +3,15 @@ from rest_framework import serializers
 from api_sirva_se.serializers import UserSerializer
 
 
-class ProdutoSerializer(serializers.HyperlinkedModelSerializer):
-    mercearia = UserSerializer(many=False)
+class ProdutoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Produto
-        fields = ('id', 'mercearia', 'nome', 'quantidade_em_estoque', 'valor_unidade', 'valor_bruto')
+        fields = '__all__'
 
 
-class VendaSerializer(serializers.HyperlinkedModelSerializer):
-    mercearia = UserSerializer(many=False)
-    produto = ProdutoSerializer(many=False)
+class VendaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Venda
-        fields = ('id', 'mercearia', 'produto', 'quantidade', 'data_hora')
+        fields = '__all__'

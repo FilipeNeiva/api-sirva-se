@@ -17,6 +17,12 @@ class FiadoList(viewsets.ModelViewSet):
 
         return Fiado.objects.filter(mercearia=user)
 
+    def perform_create(self, serializer):
+        app_tk = self.request.META["HTTP_AUTHORIZATION"]
+        user = pegar_usuario_por_token(app_tk)
+
+        serializer.save(mercearia=user)
+
 class DevedorList(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
     serializer_class = DevedorSerializer
@@ -26,5 +32,11 @@ class DevedorList(viewsets.ModelViewSet):
         user = pegar_usuario_por_token(app_tk)
 
         return Devedor.objects.filter(mercearia=user)
+
+    def perform_create(self, serializer):
+        app_tk = self.request.META["HTTP_AUTHORIZATION"]
+        user = pegar_usuario_por_token(app_tk)
+
+        serializer.save(mercearia=user)
     
     

@@ -6,14 +6,16 @@ from venda.models import Produto
 
 
 class Devedor(models.Model):
-    mercearia = models.ForeignKey(User, on_delete=models.PROTECT, related_name='devedores_usuario')
+    mercearia = models.ForeignKey(User, null=True, blank=True, 
+        on_delete=models.PROTECT, related_name='devedores_usuario')
     nome = models.CharField(max_length=30)
     telefone = models.CharField(max_length=14, null=True, blank=True)
     cpf = models.CharField(max_length=14, null=True, blank=True)
 
 
 class Fiado(models.Model):
-    mercearia = models.ForeignKey(User, on_delete=models.PROTECT, related_name='vendas_fiado')
+    mercearia = models.ForeignKey(User, null=True, blank=True, 
+        on_delete=models.PROTECT, related_name='vendas_fiado')
     devedor = models.ForeignKey(Devedor, on_delete=models.PROTECT)
     produto = models.ForeignKey(Produto, on_delete=models.PROTECT, related_name='produto_fiado')
     quantidade = models.IntegerField(default=1)

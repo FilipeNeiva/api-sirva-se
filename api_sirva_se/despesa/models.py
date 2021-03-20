@@ -6,6 +6,7 @@ from venda.models import Produto
 
 
 class Despesa(models.Model):
-    mercearia = models.ForeignKey(User, on_delete=models.PROTECT, related_name='despesas_usuario')
+    mercearia = models.ForeignKey(User, null=True, blank=True, 
+        on_delete=models.PROTECT, related_name='despesas_usuario')
     produto = models.ForeignKey(Produto, on_delete=models.PROTECT, related_name='produto_despesa')
     quantidade = models.IntegerField(default=1)

@@ -4,19 +4,15 @@ from api_sirva_se.serializers import UserSerializer
 from venda.serializers import ProdutoSerializer
 
 
-class DevedorSerializer(serializers.HyperlinkedModelSerializer):
-    mercearia = UserSerializer(many=False)
+class DevedorSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Devedor
-        fields = ('id', 'mercearia', 'nome', 'telefone', 'cpf')
+        fields = '__all__'
 
         
-class FiadoSerializer(serializers.HyperlinkedModelSerializer):
-    mercearia = UserSerializer(many=False)
-    devedor = DevedorSerializer(many=False)
-    produto = ProdutoSerializer(many=False)
+class FiadoSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Fiado
-        fields = ('id', 'mercearia', 'devedor', 'produto', 'quantidade', 'data_hora')
+        fields = '__all__'

@@ -15,8 +15,14 @@ class VendaList(viewsets.ModelViewSet):
         
         return models.Venda.objects.filter(mercearia=user)
 
+    def perform_create(self, serializer):
+        app_tk = self.request.META["HTTP_AUTHORIZATION"]
+        user = pegar_usuario_por_token(app_tk)
 
-class ProdutoList(viewsets.ModelViewSet):
+        serializer.save(mercearia=user)
+
+
+class ProdutoListView(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
     serializer_class = serializers.ProdutoSerializer
 
