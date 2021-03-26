@@ -5,7 +5,7 @@ from oauth2_provider.contrib.rest_framework import TokenHasScope, TokenHasReadWr
 from api_sirva_se.utils import pegar_contexto, pegar_usuario_por_token
 
 
-class VendaList(viewsets.ModelViewSet):
+class VendaListView(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
     serializer_class = serializers.VendaSerializer
     
@@ -37,3 +37,9 @@ class ProdutoListView(viewsets.ModelViewSet):
         user = pegar_usuario_por_token(app_tk)
 
         serializer.save(mercearia=user)
+
+
+class ItemVendaListView(viewsets.ModelViewSet):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = serializers.ItemVendaSerializer
+    queryset = models.ItemVenda.objects.all()
