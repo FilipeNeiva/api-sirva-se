@@ -14,12 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, include
 from api_sirva_se import views
 from rest_framework import routers
 from despesa import urls as despesas
 from fiado import urls as fiados
 from venda import urls as vendas
+import os
 
 router = routers.DefaultRouter()
 router.register(r'user', views.GetUser, basename='usuario')
@@ -29,9 +32,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     path('', include(router.urls)),
-    path('registrar/', views.UserRegister.as_view()),
+    path('addusuario/', views.UserRegister.as_view()),
+    path('addmercearia/', views.MerceariaRegister.as_view()),
     path('api-auth/', include('rest_framework.urls')),
     path('venda/', include(vendas.router.urls)),
     path('fiado/', include(fiados.router.urls)),
     path('despesa/', include(despesas.router.urls))
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -3,12 +3,13 @@ from django.contrib import admin
 from django.http import HttpResponseForbidden
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
 
-from rest_framework import viewsets, permissions, generics
+from rest_framework import viewsets, permissions, generics, status
 from rest_framework.response import Response
 from rest_framework.decorators import (api_view, permission_classes, action)
 
+from venda.models import Mercearia
 from api_sirva_se.utils import pegar_usuario_por_token, pegar_contexto
-from api_sirva_se.serializers import UserSerializer, GroupSerializer, UserRegistrationSerializer
+from api_sirva_se.serializers import *
 
 admin.autodiscover()
 
@@ -20,6 +21,11 @@ class UserRegister(generics.CreateAPIView):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserRegistrationSerializer
     
+
+class MerceariaRegister(generics.CreateAPIView):
+    permission_classes = [permissions.AllowAny]
+    queryset = Mercearia.objects.all()
+    serializer_class = MerceariaCreateSerializer
 
 class GetUser(viewsets.ViewSet):
     class Meta:

@@ -1,12 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
-from venda.models import Produto
+from venda.models import Produto, Mercearia
 
 # Create your models here.
 
 
 class Devedor(models.Model):
-    mercearia = models.ForeignKey(User, null=True, blank=True, 
+    mercearia = models.ForeignKey(Mercearia, null=True, blank=True, 
         on_delete=models.PROTECT, related_name='devedores_usuario')
     nome = models.CharField(max_length=30)
     telefone = models.CharField(max_length=14, null=True, blank=True)
@@ -14,7 +14,7 @@ class Devedor(models.Model):
 
 
 class Fiado(models.Model):
-    mercearia = models.ForeignKey(User, null=True, blank=True, 
+    mercearia = models.ForeignKey(Mercearia, null=True, blank=True, 
         on_delete=models.PROTECT, related_name='vendas_fiado')
     devedor = models.ForeignKey(Devedor, on_delete=models.PROTECT)
     produto = models.ForeignKey(Produto, on_delete=models.PROTECT, related_name='produto_fiado')

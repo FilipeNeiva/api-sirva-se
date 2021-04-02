@@ -5,13 +5,12 @@ from django.utils import timezone
 
 
 class Mercearia(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.PROTECT, 
-        related_name='mercearia_usuario')
-    foto_perfil = models.ImageField()
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    foto_perfil = models.ImageField(default='imagem_perfil_default.png')
 
 
 class Produto(models.Model):
-    mercearia = models.ForeignKey(User, blank=True, null=False, on_delete=models.PROTECT, 
+    mercearia = models.ForeignKey(Mercearia, blank=True, null=False, on_delete=models.PROTECT, 
         related_name='produtos_mercearia')
     nome = models.CharField(max_length=30)
     quantidade_em_estoque = models.IntegerField()
@@ -20,7 +19,7 @@ class Produto(models.Model):
 
 
 class Venda(models.Model):
-    mercearia = models.ForeignKey(User, blank=True, null=False, on_delete=models.PROTECT, related_name='vendas_mercearia')
+    mercearia = models.ForeignKey(Mercearia, blank=True, null=False, on_delete=models.PROTECT, related_name='vendas_mercearia')
     data_hora = models.DateTimeField(default=timezone.now)
 
 

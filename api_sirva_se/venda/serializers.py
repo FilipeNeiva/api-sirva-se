@@ -16,6 +16,7 @@ class VendaSerializer(serializers.ModelSerializer):
         model = Venda
         fields = '__all__'
 
+
 class ItemVendaSerializer(serializers.ModelSerializer):
 
     class Meta:
