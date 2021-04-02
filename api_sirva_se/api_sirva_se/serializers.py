@@ -1,4 +1,5 @@
 
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from venda.models import Mercearia
@@ -15,9 +16,18 @@ class MerceariaListSerializer(serializers.HyperlinkedModelSerializer):
         model = Mercearia
         fields = ('usuario', 'foto_perfil')
 
+class UserRegistrationSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
+    password = serializers.CharField()
+
+    def create(self, validated_data):
+        return User.objects.create(username=validated_data['email'], **validated_data)
+
 
 class MerceariaCreateSerializer(serializers.HyperlinkedModelSerializer):
-    usuario = UserSerializer(many=False)
+    usuario = UserRegistrationSerializer(many=False)
     class Meta:
         model = Mercearia
         fields = ('usuario', 'foto_perfil')
@@ -28,25 +38,15 @@ class MerceariaCreateSerializer(serializers.HyperlinkedModelSerializer):
         if existing:
             raise serializers.ValidationError("Alguem com esse Endereço de email já registrado. Foi você?")
         if usuario_data:
-            usuario = User.objects.create(username=usuario_data['email'],**usuario_data)
+            senha = usuario_data.pop('password', None)
+            usuario = User.objects.create(
+                username=usuario_data['email'],
+                password=make_password(senha),
+                **usuario_data)
             validate_data['usuario'] = usuario
 
         return Mercearia.objects.create(**validate_data)
 
-
-class UserRegistrationSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    first_name = serializers.CharField(required=False)
-    last_name = serializers.CharField(required=False)
-    password = serializers.CharField()
-    def validate_email(self, email):
-        existing = User.objects.filter(email=email).first()
-        if existing:
-            raise serializers.ValidationError("Alguem com esse Endereço de email já registrado. Foi você?")
-        return email
-
-    def create(self, validated_data):
-        return User.objects.create(username=validated_data['email'], **validated_data)
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
