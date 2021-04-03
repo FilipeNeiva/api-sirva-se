@@ -9,11 +9,15 @@ class Mercearia(models.Model):
     foto_perfil = models.ImageField(default='imagem_perfil_default.png')
 
 
+class Marca(models.Model):
+    nome = models.CharField(max_length=20)
+
 class Produto(models.Model):
     mercearia = models.ForeignKey(Mercearia, blank=True, null=False, on_delete=models.PROTECT, 
         related_name='produtos_mercearia')
     nome = models.CharField(max_length=30)
     quantidade_em_estoque = models.IntegerField()
+    marca = models.ForeignKey(Marca, on_delete=models.PROTECT, related_name='marca_produto')
     valor_unidade = models.FloatField()
     valor_bruto = models.FloatField()
 

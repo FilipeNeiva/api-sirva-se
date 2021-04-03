@@ -17,6 +17,11 @@ class Fiado(models.Model):
     mercearia = models.ForeignKey(Mercearia, null=True, blank=True, 
         on_delete=models.PROTECT, related_name='vendas_fiado')
     devedor = models.ForeignKey(Devedor, on_delete=models.PROTECT)
+    data_hora = models.DateTimeField()
+    
+
+class ItemFiado(models.Model):
+    fiado = models.ForeignKey(Fiado, on_delete=models.PROTECT,
+        related_name='itens_fiado')
     produto = models.ForeignKey(Produto, on_delete=models.PROTECT, related_name='produto_fiado')
     quantidade = models.IntegerField(default=1)
-    data_hora = models.DateTimeField()
