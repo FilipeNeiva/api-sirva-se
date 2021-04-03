@@ -25,7 +25,6 @@ from venda import urls as vendas
 import os
 
 router = routers.DefaultRouter()
-router.register(r'user', views.GetUser, basename='usuario')
 
 
 urlpatterns = [
@@ -33,6 +32,7 @@ urlpatterns = [
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     path('', include(router.urls)),
     path('addmercearia/', views.MerceariaRegister.as_view()),
+    path('mercearia/', views.GetMercearia.as_view()),
     path('api-auth/', include('rest_framework.urls')),
     path('venda/', include(vendas.router.urls)),
     path('fiado/', include(fiados.router.urls)),

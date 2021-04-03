@@ -14,13 +14,13 @@ class VendaListView(viewsets.ModelViewSet):
         app_tk = self.request.META["HTTP_AUTHORIZATION"]
         user = pegar_usuario_por_token(app_tk)
         
-        return models.Venda.objects.filter(mercearia=user)
+        return models.Venda.objects.filter(mercearia__usuario=user)
 
     def perform_create(self, serializer):
         app_tk = self.request.META["HTTP_AUTHORIZATION"]
         user = pegar_usuario_por_token(app_tk)
 
-        serializer.save(mercearia=user)
+        serializer.save(mercearia=models.Mercearia.objects.get(usuario=user))
 
 
 class ProdutoListView(viewsets.ModelViewSet):
@@ -31,13 +31,13 @@ class ProdutoListView(viewsets.ModelViewSet):
         app_tk = self.request.META["HTTP_AUTHORIZATION"]
         user = pegar_usuario_por_token(app_tk)
 
-        return models.Produto.objects.filter(mercearia=user)
+        return models.Produto.objects.filter(mercearia__usuario=user)
 
     def perform_create(self, serializer):
         app_tk = self.request.META["HTTP_AUTHORIZATION"]
         user = pegar_usuario_por_token(app_tk)
 
-        serializer.save(mercearia=user)
+        serializer.save(mercearia=models.Mercearia.objects.get(usuario=user))
 
 
 class ItemVendaListView(viewsets.ModelViewSet):
@@ -51,7 +51,7 @@ class ItemVendaListView(viewsets.ModelViewSet):
         pk = self.kwargs['pk']
         venda = models.Venda.objects.get(id=pk)
         
-        if venda.mercearia != user:
+        if venda.mercearia != models.Mercearia.objects.get(usuario=user):
             raise APIException('usuario não tem permição para acessar essa venda')
         
         return models.ItemVenda.objects.filter(venda=venda)

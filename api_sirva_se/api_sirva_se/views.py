@@ -27,6 +27,17 @@ class MerceariaRegister(generics.CreateAPIView):
     queryset = Mercearia.objects.all()
     serializer_class = MerceariaCreateSerializer
 
+
+class GetMercearia(generics.ListAPIView):
+    permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
+    serializer_class = MerceariaListSerializer
+    model = serializer_class.Meta.model
+    def get_queryset(self):
+        app_tk = self.request.META["HTTP_AUTHORIZATION"]
+        user  = pegar_usuario_por_token(app_tk)
+
+        return Mercearia.objects.filter(usuario=user)
+
 class GetUser(viewsets.ViewSet):
     class Meta:
         model = User
