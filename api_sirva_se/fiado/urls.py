@@ -1,7 +1,7 @@
 from rest_framework import routers
-from fiado import views
+from fiado.views import *
 
 router = routers.DefaultRouter()
-router.register(r'devedores', views.DevedorList, basename='devedores')
-router.register(r'itensfiado', views.ItemFiadoListView, basename='itemfiado')
-router.register(r'', views.FiadoList, basename='fiados')
+router.register(r'devedores', DevedorList, basename='devedores')
+router.register(r'itensfiado', ItemFiadoListView, basename='itemfiado')
+router.register(r'', FiadoList, basename='fiados')

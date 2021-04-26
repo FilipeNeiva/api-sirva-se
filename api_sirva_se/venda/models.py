@@ -10,6 +10,8 @@ class Mercearia(models.Model):
 
 
 class Marca(models.Model):
+    mercearia = models.ForeignKey(Mercearia, blank=True, null=False, on_delete=models.PROTECT, 
+        related_name='marca_mercearia')
     nome = models.CharField(max_length=20)
 
 class Produto(models.Model):
@@ -18,7 +20,7 @@ class Produto(models.Model):
     nome = models.CharField(max_length=30)
     foto_produto = models.ImageField(upload_to='produtos', default='produto_default.jpg')
     quantidade_em_estoque = models.IntegerField()
-    marca = models.ForeignKey(Marca, on_delete=models.PROTECT, related_name='marca_produto')
+    marca = models.ForeignKey(Marca, on_delete=models.PROTECT, related_name='marca_produto', null=True, blank=True)
     valor_unidade = models.FloatField()
     valor_bruto = models.FloatField()
 
